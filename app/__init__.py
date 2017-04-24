@@ -1,9 +1,11 @@
-# !/usr/bin/env python
-#
 # _*_ coding: utf-8 _*_
 #
-# Author: Juven Zhong
+# Copyright (C) 2017 钟伟 <zhong.wei@qq.com>
+# All rights reserved.
 #
+# Author: 钟伟 <zhong.wei@qq.com>
+#
+
 from flask import Flask
 from flask_bootstrap import Bootstrap
 #from flask_mail import Mail
