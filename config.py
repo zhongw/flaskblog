@@ -31,8 +31,8 @@ class Config:
 class DevelopmentConfig(Config):
     DEBUG = True
     MAIL_SERVER = 'smtp.qq.com'
-    MAIL_PORT = 587
-    MAIL_USE_TLS = True
+    MAIL_PORT = 25
+    MAIL_USE_TLS = False
     MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
     MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
     SQLALCHEMY_DATABASE_URI = os.environ.get('DEV_DATABASE_URI') or \
@@ -42,8 +42,8 @@ class DevelopmentConfig(Config):
 class TestingConfig(Config):
     TESTING = True
     MAIL_SERVER = 'smtp.qq.com'
-    MAIL_PORT = 587
-    MAIL_USE_TLS = True
+    MAIL_PORT = 25
+    MAIL_USE_TLS = False
     MAIL_USE_SSL = False
     MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
     MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
