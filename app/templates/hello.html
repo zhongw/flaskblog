@@ -1,0 +1,25 @@
+{% extends "bootstrap/base.html" %}
+{% block title %}
+My Site
+{% endblock %}
+
+{% block content %}
+{% if name %}
+<h1>Hello {{ name }}</h1>
+{% else %}
+<h1> Hello Stranger</h1>
+{% endif %}
+
+{% for message in get_flashed_messages() %}
+<div class="alert alert-warning">
+    <button type="button" class="close" data-dismiss="alert">&times;</button>
+    {{ message }}
+</div>
+{% endfor %}
+<form method="POST">
+    {{ form.hidden_tag() }}
+    {{ form.username.label }}
+    {{ form.username() }}
+    {{ form.submit() }}
+</form>
+{% endblock %}

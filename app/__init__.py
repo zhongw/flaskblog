@@ -8,13 +8,14 @@
 
 from flask import Flask
 from flask_bootstrap import Bootstrap
-#from flask_mail import Mail
+from flask_mail import Mail
 #from flask_moment import Moment
 from flask_sqlalchemy import SQLAlchemy
 from config import config
 
 bootstrap = Bootstrap()
 db = SQLAlchemy()
+mail = Mail()
 
 
 def create_app(config_name):
@@ -23,8 +24,8 @@ def create_app(config_name):
     config[config_name].init_app(app)
     bootstrap.init_app(app)
     db.init_app(app)
-
-    from .main import main as main_blueprint
+    mail.init_app(app)
+    from app.main import main as main_blueprint
     app.register_blueprint(main_blueprint)
 
     return app

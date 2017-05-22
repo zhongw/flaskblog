@@ -12,7 +12,8 @@ from wtforms.validators import DataRequired, Length
 
 
 class IndexForm(FlaskForm):
-    pass
+    username = StringField('Username:')
+    submit = SubmitField('Submit')
 
 
 class LoginForm(FlaskForm):
