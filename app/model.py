@@ -6,15 +6,18 @@
 # Author: 钟伟 <zhong.wei@qq.com>
 #
 
-from app import db
+from app import db, login_manager
 from werkzeug.security import generate_password_hash, check_password_hash
+from flask_login import UserMixin
 
 
-class User(db.Model):
+class User(UserMixin, db.Model):
     __tablename__ = 'user'
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String)
-    password_hash = db.Column(db.String)
+    username = db.Column(db.String(64), unique=True, index=True)
+    email = db.Column(db.String(128), unique=True, index=True)
+    password_hash = db.Column(db.String(128))
+    role_id = db.Column(db.Integer, db.ForeignKey('role.id'))
 
     @property
     def password(self):
@@ -26,6 +29,16 @@ class User(db.Model):
 
     def verify_password(self, password):
         return check_password_hash(self.password_hash, password)
+
+    @login_manager.user_loader
+    def load_user(user_id):
+        return User.query.get(int(user_id))
+
+
+class Role(db.Model):
+    __tablename__ =  'role'
+    id = db.Column(db.Integer, primary_key=True)
+    user = db.relationship('User', backref='role')
 
 
 class Post(db.Model):
