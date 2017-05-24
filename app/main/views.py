@@ -7,13 +7,11 @@
 #
 
 from .forms import IndexForm, LoginForm
-from flask import render_template, abort, redirect, url_for, session, \
-    flash
+from flask import render_template, abort, redirect, url_for, session, flash
 from jinja2 import TemplateNotFound
+from app.email import send_mail
 from app.main import main
-from flask_mail import Message
 from manager import app
-from app import mail
 
 
 @main.route('/login', methods=['POST','GET'])
@@ -37,13 +35,3 @@ def hello():
         return render_template("hello.html", form=form, name=session.get('username'))
     except TemplateNotFound:
         abort(404)
-
-
-def send_mail(to, subject, template, **kwargs):
-    msg = Message(app.config['FLASKY_MAIL_SUBJECT_PREFIX'] + subject,
-                  sender=app.config['FLASKY_MAIL_SENDER'], recipients=[to])
-    #msg.body = render_template(template + '.txt', **kwargs)
-    #msg.html = render_template(template + '.html', **kwargs)
-    msg.body = 'testing'
-    msg.html = '<h1>testing</h1>'
-    mail.send(msg)
