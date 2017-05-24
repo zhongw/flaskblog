@@ -1,1 +1,5 @@
 .idea
+migrations
+data-test.sqlite
+data-dev.sqlite
+data.sqlite
