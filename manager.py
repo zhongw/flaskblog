@@ -10,8 +10,9 @@ from flask_script import Manager, Shell
 from app import db, create_app
 from app.model import User, Post, Role
 from flask_migrate import Migrate, MigrateCommand
+import os
 
-app = create_app('testing')
+app = create_app(os.environ.get('FLASK_CONFIG') or 'default')
 
 manager = Manager(app)
 migrate = Migrate(app, db)
