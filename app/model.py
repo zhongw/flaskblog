@@ -9,6 +9,8 @@
 from app import db, login_manager
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
+from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
+from flask import current_app
 
 
 class User(UserMixin, db.Model):
@@ -35,9 +37,29 @@ class User(UserMixin, db.Model):
     def load_user(user_id):
         return User.query.get(int(user_id))
 
+    # 生成邮件确认token
+    def generate_email_confirmation_token(self, expires_in=3600):
+        s = Serializer(current_app.config['SECRET_KEY'], expires_in)
+        return s.dumps({'confirm': self.id})
+
+    # 验证token
+    def confirm_email(self, token):
+        s = Serializer(current_app.config['SECRET_KEY'])
+        try:
+            data = s.loads(token)
+        except:
+            return False
+
+        if data.get('confirm') != self.id:
+            return False
+
+        self.email_confirmed = True
+        db.session.add(self)
+        return True
+
 
 class Role(db.Model):
-    __tablename__ =  'role'
+    __tablename__ = 'role'
     id = db.Column(db.Integer, primary_key=True)
     user = db.relationship('User', backref='role')
 

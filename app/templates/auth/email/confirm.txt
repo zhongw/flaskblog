@@ -1,0 +1,8 @@
+你好 {{user.email}},感谢你的注册!
+<br>
+请点击如下链接验证此邮箱地址：
+<br>
+{{ url_for('auth.confirm', token=token, _external=True) }}
+<br>
+谢谢！
+ZHONGWEI.ME

@@ -30,6 +30,7 @@ class Config:
     MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
     MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
     MAIL_DEBUG = True
+    MAIL_TOKEN_EXPIRATION = 36000  # email确认token时效1小时
 
     def __init__(self):
         pass

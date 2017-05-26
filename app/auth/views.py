@@ -9,9 +9,10 @@
 from flask import render_template, redirect, url_for, request, flash
 from app.auth import auth
 from .forms import LoginForm, RegisterForm
-from flask_login import login_user, logout_user
+from flask_login import login_user, logout_user, login_required, current_user
 from app.model import User
 from app import db
+from app.email import send_mail
 
 
 @auth.route('/login', methods=['POST', 'GET'])
@@ -39,7 +40,10 @@ def register():
     if form.validate_on_submit():
         user = User(email=form.email.data, password=form.password.data)
         db.session.add(user)
-        flash('注册成功，你现在可以使用 <b>{0}</b> 登录。'.format(form.email.data))
+        db.session.commit()
+        token = user.generate_email_confirmation_token()
+        send_mail(user.email, '请验证你的邮件地址', 'auth/email/confirm', user=user, token=token)
+        flash('邮件验证链接已经发送到<b>{0}</b>, 请查收。'.format(form.email.data))
         redirect(url_for('auth.login'))
     return render_template('auth/register.html', form=form)
 
@@ -47,3 +51,34 @@ def register():
 @auth.route('/')
 def index():
     return render_template('auth/index.html')
+
+
+@auth.before_app_request
+def before_request():
+    if current_user.is_authenticated \
+            and not current_user.email_confirmed \
+            and request.endpoint[:5] != 'auth.'  \
+            and request.endpoint != 'static':
+        return redirect(url_for('auth.unconfirmed'))
+
+
+@auth.route('/confirm')
+@login_required
+def confirm():
+    token = request.args.get('token')
+    if current_user.email_confirmed:
+        return redirect(url_for('main.hello'))
+
+    if current_user.confirm_email(token):
+        flash('你的邮箱地址已经验证，谢谢。')
+    else:
+        flash('验证连接地址无效或已过期。')
+
+    return redirect(url_for('main.hello'))
+
+
+@auth.route('/unconfirmed')
+def unconfirmed():
+    if current_user.is_anonymous or current_user.email_confirmed:
+        return redirect(url_for('main.index'))
+    return 'not valid'

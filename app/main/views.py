@@ -8,11 +8,8 @@
 
 from .forms import IndexForm, LoginForm
 from flask import render_template, abort, redirect, url_for, session, flash
-from jinja2 import TemplateNotFound
-from app.email import send_mail
 from app.main import main
-from manager import app
-import os
+
 
 @main.route('/login', methods=['POST','GET'])
 def login():
@@ -28,9 +25,6 @@ def hello():
     if form.validate_on_submit():
         session["username"] = form.username.data
         flash("You have set your name successfully!")
-        send_mail(to='zhong.wei@qq.com', subject='this is a testing mail',recipients=['zhong.wei@qq.com'], template=None)
-        print(os.environ.get('MAIL_USERNAME'))
-        print(os.environ.get('MAIL_PASSWORD'))
         return redirect(url_for('main.hello'))
 
     return render_template("hello.html", form=form, name=session.get('username'))
