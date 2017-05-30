@@ -61,7 +61,19 @@ class User(UserMixin, db.Model):
 class Role(db.Model):
     __tablename__ = 'role'
     id = db.Column(db.Integer, primary_key=True)
-    user = db.relationship('User', backref='role')
+    name = db.Column(db.String(64), unique=True)
+    # 只有一个角色的设置为True, 其他设置为False，用户注册时，其角色会被设置为默认角色
+    default = db.Column(db.Boolean, default=False, index=True)
+    permissions = db.Column(db.Integer)
+    user = db.relationship('User', backref='role', lazy='dynamic')
+
+
+class Permission:
+    FOLLOW = 0x01                    # 关注用户，关注其他用户
+    COMMENT = 0x02                   # 在他人的文章中发表评论
+    WRITE_ARTICLE = 0x04             # 写文章
+    MODERATE_COMMENTS = 0x08         # 管理他人发表的评论
+    ADMIN = 0x80                     # 管理员权限，管理网站
 
 
 class Post(db.Model):
