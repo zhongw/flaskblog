@@ -20,11 +20,11 @@ def login():
 
 
 @main.route('/', methods=['POST','GET'])
-def hello():
+def main():
     form = IndexForm()
     if form.validate_on_submit():
         session["username"] = form.username.data
         flash("You have set your name successfully!")
-        return redirect(url_for('main.hello'))
+        return redirect(url_for('main.main'))
 
-    return render_template("hello.html", form=form, name=session.get('username'))
+    return render_template("main.html", form=form, name=session.get('username'))
