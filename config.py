@@ -20,7 +20,7 @@ class Config:
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
     # 配置邮件
-    FLASKY_ADMIN = 'noreply@zhongwei.me'
+    ADMIN_EMAIL = 'zhong.wei@qq.com'
     MAIL_SUBJECT_PREFIX = '[ZHONGWEI.ME]'
     MAIL_SERVER = 'smtp.exmail.qq.com'
     MAIL_PORT = 465
