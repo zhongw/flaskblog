@@ -11,12 +11,16 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin, AnonymousUserMixin
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from flask import current_app
+from datetime import datetime
 
 
 class User(UserMixin, db.Model):
     __tablename__ = 'user'
     id = db.Column(db.Integer, primary_key=True)
     display_name = db.Column(db.String(64))
+    about_me = db.Column(db.Text())
+    member_since = db.Column(db.DateTime(), default=datetime.utcnow)
+    last_seen = db.Column(db.DateTime(), default=datetime.utcnow)
     email = db.Column(db.String(64), unique=True, index=True)
     email_confirmed = db.Column(db.Boolean, default=False)
     password_hash = db.Column(db.String(128))
@@ -71,6 +75,11 @@ class User(UserMixin, db.Model):
 
     def is_administrator(self):
         return self.can(Permission.ADMIN)
+
+    def ping(self):
+        """每次用户请求时更新最后访问时间"""
+        self.last_seen = datetime.utcnow()
+        db.session.add(self)
 
 
 class AnonymousUser(AnonymousUserMixin):

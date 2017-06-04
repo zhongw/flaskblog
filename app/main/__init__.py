@@ -7,12 +7,14 @@
 #
 
 from flask import Blueprint
+main = Blueprint('main', __name__)
+
+
 from . import views, forms
 from app.model import Permission
 
-main = Blueprint('main', __name__, template_folder='templates')
 
-
-@main.app_context_processor()
+@main.app_context_processor
 def inject_permission():
     return dict(Permission=Permission)
+
