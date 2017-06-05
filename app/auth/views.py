@@ -70,12 +70,10 @@ def confirm():
     token = request.args.get('token')
     if current_user.email_confirmed:
         return redirect(url_for('main.index'))
-
     if current_user.confirm_email(token):
         flash('你的邮箱地址已经验证，谢谢。')
     else:
         flash('验证连接地址无效或已过期。')
-
     return redirect(url_for('main.index'))
 
 

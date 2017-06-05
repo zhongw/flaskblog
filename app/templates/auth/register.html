@@ -3,12 +3,15 @@
 My Site - 注册
 {% endblock %}
 {% block content %}
+<div class="container">
 <div class="col-md-4">
     <form method="POST">
-        {{ form.email.label }} {{ form.email }} <br>
+        {{ form.hidden_tag() }}
+        {{ form.email.label }} {{ form.email }} {{ form.email.error }}<br>
         {{ form.password.label }} {{ form.password }} <br>
         {{ form.password2.label }} {{ form.password2 }}<br>
         {{ form.submit(class='btn btn-success') }}
     </form>
 </div>
+    </div>
 {% endblock %}
