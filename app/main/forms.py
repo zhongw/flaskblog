@@ -7,13 +7,8 @@
 #
 
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, PasswordField
+from wtforms import StringField, SubmitField, PasswordField, TextAreaField
 from wtforms.validators import DataRequired, Length
-
-
-class IndexForm(FlaskForm):
-    username = StringField('Username:')
-    submit = SubmitField('Submit')
 
 
 class LoginForm(FlaskForm):
@@ -21,3 +16,8 @@ class LoginForm(FlaskForm):
     password = PasswordField('Password:', validators=[DataRequired(), Length(min=6,max=18)])
     login = SubmitField('Login')
     logout = SubmitField('Logout')
+
+
+class PostForm(FlaskForm):
+    body = TextAreaField("博客内容:", validators=[DataRequired()])
+    submit = SubmitField("发布")

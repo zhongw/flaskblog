@@ -6,14 +6,13 @@
     <link rel="icon" href="{{url_for('static', filename='favicon.ico')}}">
     {{ moment.include_jquery() }}
     {{ moment.include_moment() }}
-　　 {{ moment.lang("zh-CN") }}
-    <title>{% block title%} {% endblock %}</title>
+    {{ moment.lang("zh-CN") }}
+    <title>{% block title%} {% endblock %} - ZHONGWEI.ME</title>
 
     <link href="//cdn.bootcss.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" rel="stylesheet">
 </head>
 
 <body>
-{% block body %}
 {% block navbar %}
 <nav class="navbar navbar-toggleable-md navbar-light bg-faded">
     <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
@@ -47,7 +46,8 @@
             {% endif %}
         </ul>
     </div>
-</nav>
+</nav> <!--navbar end-->
+{% endblock %}
 <div class="container">
     {% for message in get_flashed_messages() %}
     <div class="alert alert-warning">
@@ -56,7 +56,6 @@
     </div>
     {% endfor %}
 </div>
-{% endblock %}
 {% block content %}
 {% endblock %}
 {% block footer %}
@@ -65,5 +64,4 @@
 <script src="//cdn.bootcss.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js"></script>
 {% endblock %}
 </body>
-{% endblock %}
 </html>

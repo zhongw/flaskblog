@@ -6,10 +6,12 @@
 # Author: 钟伟 <zhong.wei@qq.com>
 #
 
-from .forms import IndexForm, LoginForm
+from .forms import PostForm, LoginForm
 from flask import render_template, abort, redirect, url_for, session, flash
 from app.main import main
-from app.model import User
+from app.model import User, Post
+from flask_login import current_user
+from app import db
 
 
 @main.route('/login', methods=['POST','GET'])
@@ -22,12 +24,15 @@ def login():
 
 @main.route('/', methods=['POST','GET'])
 def index():
-    form = IndexForm()
+    form = PostForm()
+    author = current_user._get_current_object()
     if form.validate_on_submit():
-        session["username"] = form.username.data
-        flash("You have set your name successfully!")
+        body = form.body.data
+        post = Post(body=body, author_id=author.id)
+        db.session.add(post)
         return redirect(url_for('main.index'))
-    return render_template("main.html", form=form, name=session.get('username'))
+    posts = Post.query.order_by(Post.create_date.desc()).all()
+    return render_template("main.html", form=form, posts=posts)
 
 
 @main.route('/user/<user_id>')
