@@ -4,17 +4,14 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="icon" href="{{url_for('static', filename='favicon.ico')}}">
-    {{ moment.include_jquery() }}
-    {{ moment.include_moment() }}
-    {{ moment.lang("zh-CN") }}
     <title>{% block title%} {% endblock %} - ZHONGWEI.ME</title>
 
     <link href="//cdn.bootcss.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" rel="stylesheet">
 </head>
 
 <body>
-{% block navbar %}
-<nav class="navbar navbar-toggleable-md navbar-light bg-faded">
+<!--导向栏开始-->
+<nav class="navbar sticky-top navbar-toggleable-md navbar-light bg-faded">
     <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
             data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
             aria-label="Toggle navigation">
@@ -46,8 +43,9 @@
             {% endif %}
         </ul>
     </div>
-</nav> <!--navbar end-->
-{% endblock %}
+</nav>
+<!--导向栏结束-->
+
 <div class="container">
     {% for message in get_flashed_messages() %}
     <div class="alert alert-warning">
@@ -55,13 +53,27 @@
         {{ message | safe}}
     </div>
     {% endfor %}
+
+
+    <div class="row">
+        <div class="col-md-8">
+            {% block blog_main %}
+            {% endblock %}
+        </div>
+        <div class="col-md-4">
+            {% block blog_sidebar %}
+            这里放Blog的分类，归档等
+            {% endblock %}
+        </div>
+    </div>
+
+    {% block footer %}
+    <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.slim.min.js"></script>
+    <script src="//cdn.bootcss.com/tether/1.4.0/js/tether.min.js"></script>
+    <script src="//cdn.bootcss.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js"></script>
+    {% block scripts %}
+    {% endblock %}
+    {% endblock %}
 </div>
-{% block content %}
-{% endblock %}
-{% block footer %}
-<script src="//cdn.bootcss.com/jquery/3.2.1/jquery.slim.min.js"></script>
-<script src="//cdn.bootcss.com/tether/1.4.0/js/tether.min.js"></script>
-<script src="//cdn.bootcss.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js"></script>
-{% endblock %}
 </body>
 </html>

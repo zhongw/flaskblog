@@ -9,6 +9,7 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, PasswordField, TextAreaField
 from wtforms.validators import DataRequired, Length
+from flask_pagedown.fields import PageDownField
 
 
 class LoginForm(FlaskForm):
@@ -19,5 +20,5 @@ class LoginForm(FlaskForm):
 
 
 class PostForm(FlaskForm):
-    body = TextAreaField("博客内容:", validators=[DataRequired()])
+    body = PageDownField("博客内容:", validators=[DataRequired()])
     submit = SubmitField("发布")

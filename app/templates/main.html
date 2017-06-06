@@ -1,13 +1,13 @@
 {% extends "base.html" %}
 {% block title %} 首页 {% endblock %}
 
-{% block content %}
+{% block blog_main %}
 <div class="container">
     <div class="form-group">
         {% if current_user.can(Permission.WRITE_ARTICLE) %}
         <form method="POST">
             {{ form.hidden_tag() }}
-            {{ form.body(placeholder="写点什么...", class="form-control", id="exampleTextarea", rows="4") }} <br>
+            {{ form.body(placeholder="写点什么...", class="form-control", rows="4") }} <br>
             {{ form.submit(class="btn btn-outline-success float-right") }}
         </form>
         {% endif %}
@@ -29,7 +29,7 @@
                     </div>
                 </div>
                 <div>
-                    {{ post.body | safe}}
+                    {{ post.body_html | safe}}
                 </div>
             </li>
 
@@ -37,4 +37,14 @@
         </ul>
     </div>
 </div>
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+<!--moment插件引用的JS-->
+{{ moment.include_jquery() }}
+{{ moment.include_moment() }}
+{{ moment.lang("zh-CN") }}
+<!--pagedown插件引用的JS-->
+{{ pagedown.include_pagedown() }}
 {% endblock %}

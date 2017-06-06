@@ -41,3 +41,10 @@ def user(user_id):
     if user is None:
         abort(404)
     return render_template('user.html', user=user)
+
+
+@main.route('/post/<id>')
+def post(id):
+    post = Post.query.get_or_404(id)
+    user = User.query.get_or_404(post.author_id)
+    return render_template('post.html', post=post, author=user)
