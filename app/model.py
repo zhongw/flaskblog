@@ -146,6 +146,8 @@ class Post(db.Model):
 
     @staticmethod
     def on_changed_body(target, value, oldvalue, initiator):
+        """Markdown文本转换为HTML，再将允许的HTML标签传给bleach.clean函数进行清理，
+        再由bleach.linkify函数把URL转成<a>链接"""
         allowed_tags = ['a', 'abbr', 'acronym', 'b', 'blockquote', 'code', 'em', 'hr',
                         'i', 'li', 'ol', 'pre', 'strong', 'ul', 'h1', 'h2', 'h3', 'p']
         target.body_html =  bleach.linkify(bleach.clean(markdown(value, output_format='html'),
