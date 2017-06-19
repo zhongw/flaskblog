@@ -6,3 +6,10 @@
 # Author: 钟伟 <zhong.wei@qq.com>
 #
 
+from flask import render_template
+from . import admin
+
+
+@admin.route('/')
+def admin_index():
+    return render_template('admin/base.html')

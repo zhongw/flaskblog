@@ -7,6 +7,19 @@
     <title>{% block title%} {% endblock %} - ZHONGWEI.ME</title>
 
     <link href="//cdn.bootcss.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+            .panel-group {max-height:770px;overflow: auto;}
+            .leftMenu {margin:10px;margin-top:5px;}
+            .leftMenu .panel-heading {font-size:14px;padding-left:20px;height:36px;line-height:36px;position:relative;cursor:pointer;}/*转成手形图标*/
+            .leftMenu .panel-heading span {position:absolute;right:10px;top:12px;}
+            .leftMenu .menu-item-left {padding: 2px; background: transparent; border:1px solid transparent;border-radius: 6px;}
+            .leftMenu .menu-item-left:hover {background:#C4E3F3;border:1px solid #1E90FF;}
+
+
+
+
+
+    </style>
 </head>
 
 <body>
@@ -53,23 +66,87 @@
 
 
     <div class="row">
-        <div class="col-md-4">
-            {% block admin_menu %}
-            {% endblock %}
+        <div class="col-md-2">
+            <div class="table-responsive" role="tablist">
+                <div class="card card-primary leftMenu">
+                    <!-- 利用data-target指定要折叠的分组列表 -->
+                    <div id="collapseListGroupHeading1" data-toggle="collapse"
+                         data-target="#collapseListGroup1" role="tab">
+                        <h4 class="panel-title">
+                            文章管理
+                            <span class="glyphicon glyphicon-chevron-up right"></span>
+                        </h4>
+                    </div>
+
+                    <!-- .panel-collapse和.collapse标明折叠元素 .in表示要显示出来 -->
+                    <div id="collapseListGroup1" class="panel-collapse collapse in" role="tabpanel"
+                         aria-labelledby="collapseListGroupHeading1">
+                        <ul class="list-group">
+                            <li class="list-group-item">
+                                <!-- 利用data-target指定URL -->
+                                <button class="menu-item-left" data-target="test2.html">
+                                    <span class="glyphicon glyphicon-triangle-right"></span>分组项1-1
+                                </button>
+                            </li>
+                            <li class="list-group-item">
+                                <button class="menu-item-left">
+                                    <span class="glyphicon glyphicon-triangle-right"></span>分组项1-2
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
+                </div><!--panel end-->
+                <div class="card car-inverse card-primary leftMenu text-center">
+                    <div class="panel-heading" id="collapseListGroupHeading2" data-toggle="collapse"
+                         data-target="#collapseListGroup2" role="tab">
+                        <h4 class="panel-title">
+                            分组2
+                            <span class="glyphicon glyphicon-chevron-down right"></span>
+                        </h4>
+                    </div>
+
+                    <div id="collapseListGroup2" class="panel-collapse collapse" role="tabpanel"
+                         aria-labelledby="collapseListGroupHeading2">
+                        <ul class="list-group">
+                            <li class="list-group-item">
+                                <button class="menu-item-left">
+                                    <span class="glyphicon glyphicon-triangle-right"></span>分组项2-1
+                                </button>
+                            </li>
+                            <li class="list-group-item">
+                                <button class="menu-item-left">
+                                    <span class="glyphicon glyphicon-triangle-right"></span>分组项2-2
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="col-md-8">
+        <div class="col-md-10">
             {% block admin_main %}
             这里放Blog的分类，归档等
             {% endblock %}
-        </div>
-    </div>
+        </div> <!-- end of column-md-10 -->
+    </div> <!-- end of row -->
 
-    {% block footer %}
     <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.slim.min.js"></script>
     <script src="//cdn.bootcss.com/tether/1.4.0/js/tether.min.js"></script>
     <script src="//cdn.bootcss.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js"></script>
+    <script>
+        $(function(){
+            $(".panel-heading").click(function(e){
+                /* 切换折叠指示图标 */
+                $(this).find("span").toggleClass("glyphicon-chevron-down");
+                $(this).find("span").toggleClass("glyphicon-chevron-up");
+            });
+        });
+
+
+
+
+    </script>
     {% block scripts %}
-    {% endblock %}
     {% endblock %}
 </div>
 </body>
