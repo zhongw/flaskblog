@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %} 首页 {% endblock %}
+
+{% block blog_main %}
+<div class="container">
+    {% if post.body_html %}
+    {{ post.body_html | safe }}
+    {% else %}
+    {{ post.body }}
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+<!--moment插件引用的JS-->
+{{ moment.include_jquery() }}
+{{ moment.include_moment() }}
+{{ moment.lang("zh-CN") }}
+{% endblock %}
