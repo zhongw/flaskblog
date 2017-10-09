@@ -52,10 +52,10 @@ class User(UserMixin, db.Model):
     def load_user(user_id):
         return User.query.get(int(user_id))
 
-    # 生成邮件确认token
-    def generate_email_confirmation_token(self, expires_in=3600):
+    # 生成token
+    def generate_token(self, expires_in=3600):
         s = Serializer(current_app.config['SECRET_KEY'], expires_in)
-        return s.dumps({'confirm': self.id})
+        return s.dumps({'id': self.id})
 
     # 验证token
     def confirm_email(self, token):
@@ -65,12 +65,21 @@ class User(UserMixin, db.Model):
         except:
             return False
 
-        if data.get('confirm') != self.id:
+        if data.get('id') != self.id:
             return False
 
         self.email_confirmed = True
         db.session.add(self)
         return True
+
+    @staticmethod
+    def verify_auth_token(token):
+        s = Serializer(current_app.config['SECRET_KEY'])
+        try:
+            data = s.loads(token)
+        except:
+            return None
+        return User.query.get(data['id'])
 
     def can(self, permissions):
         return self.role is not None and \

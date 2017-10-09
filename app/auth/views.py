@@ -41,7 +41,7 @@ def register():
         user = User(email=form.email.data, password=form.password.data)
         db.session.add(user)
         db.session.commit()
-        token = user.generate_email_confirmation_token()
+        token = user.generate_token()
         send_mail(user.email, '请验证你的邮件地址', 'auth/email/confirm', user=user, token=token)
         flash('邮件验证链接已经发送到<b>{0}</b>, 请查收。'.format(form.email.data))
         return redirect(url_for('auth.login'))
