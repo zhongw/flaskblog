@@ -8,6 +8,7 @@
 #
 
 from flask import Blueprint
-from . import users
 
 api = Blueprint('api', __name__)
+
+from . import users, authentication, errors, posts

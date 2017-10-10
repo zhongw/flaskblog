@@ -10,7 +10,7 @@ from app import db, login_manager
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin, AnonymousUserMixin
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
-from flask import current_app
+from flask import current_app, url_for
 from datetime import datetime
 import bleach
 from markdown import markdown
@@ -93,6 +93,15 @@ class User(UserMixin, db.Model):
         self.last_seen = datetime.utcnow()
         db.session.add(self)
 
+    def to_json(self):
+        json_user = {
+            #'url': url_for('api.get_post', id=self.id, _external=True),
+            'username': self.display_name,
+            'member_since': self.member_since,
+            'last_seen': self.last_seen
+            #'posts': url_for('api.get_user_posts', id=self.id, _external=True)
+        }
+
 
 class AnonymousUser(AnonymousUserMixin):
     def can(self, permission):
@@ -158,9 +167,19 @@ class Post(db.Model):
         """Markdown文本转换为HTML，再将允许的HTML标签传给bleach.clean函数进行清理，
         再由bleach.linkify函数把URL转成<a>链接"""
         allowed_tags = ['a', 'abbr', 'acronym', 'b', 'blockquote', 'code', 'em', 'hr',
-                        'i', 'li', 'ol', 'pre', 'strong', 'ul', 'h1', 'h2', 'h3', 'p']
+                        'i', 'li', 'ol', 'pre', 'strong', 'ul', 'h1', 'h2', 'h3', 'h4', 'p']
         target.body_html =  bleach.linkify(bleach.clean(markdown(value, output_format='html'),
                                                         tags=allowed_tags, strip=True))
+
+    def to_json(self):
+        json_post = {
+            #'url': url_for('api.get_post', id=self.id, _external=True),
+            'body': self.body,
+            'body_html': self.body_html,
+            'timestamp': self.update_date
+            #'author': url_for('api.get_user', id=self.author_id, _external=True)
+        }
+        return json_post
 
 
 db.event.listen(Post.body, 'set', Post.on_changed_body)
