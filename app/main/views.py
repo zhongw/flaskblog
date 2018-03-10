@@ -14,7 +14,7 @@ from flask_login import current_user
 from app import db
 
 
-@main.route('/login', methods=['POST','GET'])
+@main.route('/login', methods=['POST', 'GET'])
 def login():
     form = LoginForm()
 
@@ -22,7 +22,7 @@ def login():
         pass
 
 
-@main.route('/', methods=['POST','GET'])
+@main.route('/', methods=['GET'])
 def index():
     form = PostForm()
     author = current_user._get_current_object()
@@ -32,7 +32,7 @@ def index():
         db.session.add(post)
         return redirect(url_for('main.index'))
     posts = Post.query.order_by(Post.create_date.desc()).all()
-    return render_template("main.html", form=form, posts=posts)
+    return render_template("index.html", form=form, posts=posts)
 
 
 @main.route('/user/<user_id>')
@@ -48,3 +48,9 @@ def post(id):
     post = Post.query.get_or_404(id)
     user = User.query.get_or_404(post.author_id)
     return render_template('post.html', post=post, author=user)
+
+
+@main.errorhandler(404)
+def page_not_found(e):
+    abort(404)
+    return render_template("404.html"), 404

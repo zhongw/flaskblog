@@ -1,76 +1,36 @@
-<!DOCTYPE html>
-<html lang="zh">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="icon" href="{{url_for('static', filename='favicon.ico')}}">
-    <title>{% block title%} {% endblock %} - ZHONGWEI.ME</title>
+{% extends "bootstrap/base.html" %}
 
-    <link href="//cdn.bootcss.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" rel="stylesheet">
-</head>
+{% block title %}zhongwei.me{% endblock %}
 
-<body>
-<!--导向栏开始-->
-<nav class="navbar sticky-top navbar-toggleable-md navbar-light bg-faded">
-    <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
-            data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
-            aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
-                <a class="nav-link" href="{{ url_for('main.index') }}">Home <span class="sr-only">(current)</span></a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link disabled" href="#">关于我</a>
-            </li>
-        </ul>
-        <!-- 搜索功能
-        <form class="form-inline my-2 my-lg-0">
-            <input type="text" class="form-control mr-sm-2" placeholder="Search">
-            <button type="submit" class="btn btn-outline-success my-2 my-sm-0">Search</button>
-        </form>
-        -->
-        <ul class="navbar-nav navbar-right">
-            {% if current_user.is_authenticated %}
-            <li class="navbar-text">欢迎你 {{ current_user.email }} <a href="{{ url_for('auth.logout') }}">退出登录</a></li>
-            {% else %}
-            <li><a class="nav-link" href="{{ url_for('auth.login') }}">请登录</a></li>
-            {% endif %}
-        </ul>
-    </div>
-</nav>
-<!--导向栏结束-->
-
-<div class="container">
-    {% for message in get_flashed_messages() %}
-    <div class="alert alert-warning">
-        <button type="button" class="close" data-dismiss="alert">&times;</button>
-        {{ message | safe}}
-    </div>
-    {% endfor %}
-
-
-    <div class="row">
-        <div class="col-md-8">
-            {% block blog_main %}
-            {% endblock %}
+{% block navbar %}
+<div class="navbar navbar-inverse" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">ZhongWei</a>
         </div>
-        <div class="col-md-4">
-            {% block blog_sidebar %}
-            这里放Blog的分类，归档等
-            {% endblock %}
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li><a href="/">Home</a></li>
+            </ul>
         </div>
     </div>
-
-    {% block footer %}
-    <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.slim.min.js"></script>
-    <script src="//cdn.bootcss.com/tether/1.4.0/js/tether.min.js"></script>
-    <script src="//cdn.bootcss.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
-    {% block scripts %}
-    {% endblock %}
-    {% endblock %}
 </div>
-</body>
-</html>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    {% block page_content %}{% endblock %}
+</div>
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+{{ moment.include_moment() }}
+{{ moment.lang("zh-CN") }}
+{% endblock %}
